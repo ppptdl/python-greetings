@@ -54,10 +54,10 @@ pipeline {
 
 def build_image(){
     echo "Building docker image"
-    sh "docker build -t ppptdl/python-greetings ."
+    sh "docker build -t peterispp/python-greetings ."
 
     echo "Pushing image to docker registry"
-    sh "docker push ppptdl/python-greetings"
+    sh "docker push peterispp/python-greetings"
 
     echo "Method build_image completed"
 }
