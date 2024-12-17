@@ -58,14 +58,20 @@ def build_image(){
 
     echo "Pushing image to docker registry"
     sh "docker push ppptdl/python-greetings ."
+
+    echo "Method build_image completed"
 }
 
 def deploy_to_env(String env){
     echo "Deploying on ${env} env"
+
+    echo "Method deploy_to_env in ${env} completed"
 }
 
 def run_test(String env){
     echo "Testing on ${env} env"
+
+    echo "Method run_test in ${env} completed"
 }
 
 
