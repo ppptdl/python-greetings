@@ -57,7 +57,7 @@ def build_image(){
     sh "docker build -t ppptdl/python-greetings ."
 
     echo "Pushing image to docker registry"
-    sh "docker push ppptdl/python-greetings ."
+    sh "docker push ppptdl/python-greetings"
 
     echo "Method build_image completed"
 }
