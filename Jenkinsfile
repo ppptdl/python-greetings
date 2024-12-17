@@ -1,47 +1,72 @@
 pipeline {
     agent any
+    // how often Jenkins will check for changes in github
+    // tiggers{
+    //     pollSCM('*/1 * * * *')
+    // }
 
     stages {
         stage('build-docker-image') {
             steps {
-                echo "Building docker image"
+                build_image()
             }
         }
 
 
         stage('deploy-to-dev') {
             steps {
-                echo "Deplyoing to DEV env"
+                deploy_to_env("DEV")
             }
         }
         stage('tests-on-dev') {
             steps {
-                echo "Testing on DEV env"
+                run_test("DEV")
             }
         }
 
 
         stage('deploy-to-stg') {
             steps {
-                echo "Deplyoing to STG env"
+                deploy_to_env("STG")
             }
         }
         stage('tests-on-stg') {
             steps {
-                echo "Testing on STG env"
+                run_test("STG")
             }
         }
 
 
         stage('deploy-to-prod') {
             steps {
-                echo "Deplyoing to PROD env"
+                deploy_to_env("PROD")
             }
         }
         stage('tests-on-prod') {
             steps {
-                echo "Testing on PROD env"
+                run_test("PROD")
             }
         }
     }
 }
+
+//______________________METHODS_________________________
+
+def build_image(){
+    echo "Building docker image"
+    sh "docker build -t ppptdl/python-greetings ."
+
+    echo "Pushing image to docker registry"
+    sh "docker push ppptdl/python-greetings ."
+}
+
+def deploy_to_env(String env){
+    echo "Deploying on ${env} env"
+}
+
+def run_test(String env){
+    echo "Testing on ${env} env"
+}
+
+
+
