@@ -1,9 +1,6 @@
 pipeline {
     agent any
-    // how often Jenkins will check for changes in github
-    // tiggers{
-    //     pollSCM('*/1 * * * *')
-    // }
+
     parameters{
         string(name:'greetingsImageName', defaultValue:'peterispp/python-greetings-app:latest', description:'Docker image name')
         string(name:'apiTestImageName', defaultValue:'peterispp/api-tests:latest', description:'Docker image name')
@@ -63,17 +60,16 @@ def build_image(){
     echo "Pushing image to docker registry"
     sh "docker push ${greetingsImageName}"
 
+
     echo "Method build_image completed"
 }
 
 def deploy_to_env(String env){
     echo "Deploying on ${env} env"
-    sh "docker pull ${greetingsImageName}"
-//TODO
+    sh "docker pull ${params.greetingsImageName}"
+
     sh "docker compose stop"
-
     sh "docker compose down"
-
     sh "docker compose up"
 
 
@@ -82,8 +78,9 @@ def deploy_to_env(String env){
 
 def run_test(String env){
     echo "Testing on ${env} env"
-    sh "docker pull ${apiTestImageName}"
-    sh "docker run --network=host --rm ${apiTestImageName} run greetings greetings_${env}"
+    sh "docker pull ${params.apiTestImageName}"
+    sh "docker run --network=host --rm ${params.apiTestImageName} run greetings greetings_${env}"
+
 
     echo "Method run_test in ${env} completed"
 }
