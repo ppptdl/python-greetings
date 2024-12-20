@@ -4,7 +4,11 @@ pipeline {
     // tiggers{
     //     pollSCM('*/1 * * * *')
     // }
-
+    parameters{
+        string(name:'greetingsImageName', defaultValue:'peterispp/python-greetings-app:latest', description:'Docker image name')
+        string(name:'apiTestImageName', defaultValue:'peterispp/api-tests:latest', description:'Docker image name')
+    }
+    //this is run sequentially by default
     stages {
         stage('build-docker-image') {
             steps {
@@ -54,22 +58,32 @@ pipeline {
 
 def build_image(){
     echo "Building docker image"
-    sh "docker build -t peterispp/python-greetings ."
+    sh "docker build -t ${greetingsImageName} ."
 
     echo "Pushing image to docker registry"
-    sh "docker push peterispp/python-greetings"
+    sh "docker push ${greetingsImageName}"
 
     echo "Method build_image completed"
 }
 
 def deploy_to_env(String env){
     echo "Deploying on ${env} env"
+    sh "docker pull ${greetingsImageName}"
+//TODO
+    sh "docker compose stop"
+
+    sh "docker compose down"
+
+    sh "docker compose up"
+
 
     echo "Method deploy_to_env in ${env} completed"
 }
 
 def run_test(String env){
     echo "Testing on ${env} env"
+    sh "docker pull ${apiTestImageName}"
+    sh "docker run --network=host --rm ${apiTestImageName} run greetings greetings_${env}"
 
     echo "Method run_test in ${env} completed"
 }
