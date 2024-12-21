@@ -16,36 +16,36 @@ pipeline {
 
         stage('deploy-to-dev') {
             steps {
-                deploy_to_env("DEV")
+                deploy_to_env("dev")
             }
         }
         stage('tests-on-dev') {
             steps {
-                run_test("DEV")
+                run_test("dev")
             }
         }
 
 
         stage('deploy-to-stg') {
             steps {
-                deploy_to_env("STG")
+                deploy_to_env("stg")
             }
         }
         stage('tests-on-stg') {
             steps {
-                run_test("STG")
+                run_test("stg")
             }
         }
 
 
         stage('deploy-to-prod') {
             steps {
-                deploy_to_env("PROD")
+                deploy_to_env("prod")
             }
         }
         stage('tests-on-prod') {
             steps {
-                run_test("PROD")
+                run_test("prod")
             }
         }
     }
