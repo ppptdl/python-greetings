@@ -70,7 +70,7 @@ def deploy_to_env(String env){
 
     sh "docker compose stop"
     sh "docker compose down"
-    sh "docker compose up"
+    sh "docker compose up -d"
 
 
     echo "Method deploy_to_env in ${env} completed"
